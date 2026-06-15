@@ -104,13 +104,11 @@ elif menu=="Análisis Visual":
         ])
 
 # TAB 1
-with tabs[0]:
+ with tabs[0]:
 
-    st.subheader("Resumen estadístico")
-
-    st.dataframe(
-        df.describe(include="all")
-    )
+            st.dataframe(
+                df.describe(include="all")
+            )
 
 # TAB 2
 with tabs[1]:
