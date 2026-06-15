@@ -121,40 +121,5 @@ elif menu=="Análisis Visual":
                 sns.heatmap(corr, annot=True, cmap="coolwarm", ax=ax)
                 st.pyplot(fig)
 
-        with tabs[4]:
-
-    st.subheader("Insights del Dataset")
-
-    st.write("Cantidad de registros:", df.shape[0])
-
-    st.write("Cantidad de variables:", df.shape[1])
-
-    st.write("Valores nulos:", int(df.isnull().sum().sum()))
-
-    if len(num_cols) > 0:
-
-        col = st.selectbox(
-            "Seleccione una variable para analizar",
-            num_cols,
-            key="insight"
-        )
-
-        st.write(
-            "Promedio:",
-            round(df[col].mean(), 2)
-        )
-
-        st.write(
-            "Valor mínimo:",
-            df[col].min()
-        )
-
-        st.write(
-            "Valor máximo:",
-            df[col].max()
-        )
-
-    st.success(
-        "Los gráficos permiten identificar distribuciones, valores atípicos y relaciones entre variables."
-    )
+        with tabs[4]: st.success("Generar conclusiones según los gráficos observados.")
     
