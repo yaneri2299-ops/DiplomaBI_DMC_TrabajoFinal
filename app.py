@@ -103,13 +103,11 @@ elif menu=="Análisis Visual":
             "Conclusiones"
         ])
 
-# TAB 1
- with tabs[0]:
+        with tabs[0]:
 
             st.dataframe(
                 df.describe(include="all")
             )
-
 # TAB 2
 with tabs[1]:
 
