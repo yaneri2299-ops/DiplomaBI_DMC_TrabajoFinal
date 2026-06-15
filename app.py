@@ -11,7 +11,7 @@ def load_data(file):
     return pd.read_csv(file)
 
 
-st.title("📊 App Analizadora de Datasets con Streamlit")
+st.title("📊 App Analizadora de Datasets")
 
 menu = st.sidebar.radio(
     "Menú",
@@ -23,9 +23,9 @@ if "df" not in st.session_state:
 
 if menu=="Home":
     st.header("Proyecto Final Integrador")
-    st.write("Autor: Yaneri Martinez")
+    st.write("Autor: Yaneri Martinez Huamani")
     st.write("Tecnologías: Python, Pandas, Streamlit, Plotly, Matplotlib, Seaborn, GitHub")
-    st.info("Resultados exploratorios. No reemplazan validación profesional.")
+    st.info("Resultados exploratorios.")
     st.markdown("""
     **Datasets soportados**
     - AI Impact on Jobs
