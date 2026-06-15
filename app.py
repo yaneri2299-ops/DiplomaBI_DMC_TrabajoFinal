@@ -88,38 +88,78 @@ elif menu=="Análisis Visual":
 
         tabs = st.tabs([
     "Resumen",
-    "Univariado",
-    "Bivariado",
-    "Multivariado",
-    "Insights"
+    "Distribución",
+    "Comparación",
+    "Correlación",
+    "Conclusiones"
 ])
 
         with tabs[0]:
             st.dataframe(df.describe(include="all"))
 
-        with tabs[1]:
-            if num_cols:
-                col = st.selectbox("Variable numérica", num_cols)
-                fig = px.histogram(df, x=col)
-                st.plotly_chart(fig, use_container_width=True)
+        with tab1:
+        st.subheader("Histograma")
 
-                fig2, ax = plt.subplots()
-                sns.boxplot(x=df[col], ax=ax)
-                st.pyplot(fig2)
+        fig = px.histogram(
+            data,
+            x=variable_numerica,
+            title=f"Distribución de {variable_numerica}"
+            )
+
+    st.plotly_chart(fig)
+
+        st.subheader("Boxplot")
+
+    fig2 = px.box(
+        data,
+        y=variable_numerica
+    )
+
+    st.plotly_chart(fig2)
 
         with tabs[2]:
-            if len(num_cols)>=2:
-                x = st.selectbox("X", num_cols, key="x")
-                y = st.selectbox("Y", num_cols, key="y")
-                fig = px.scatter(df,x=x,y=y)
-                st.plotly_chart(fig,use_container_width=True)
+               if len(lista_columna_categorica) > 0:
+
+        fig3 = px.box(
+            data,
+            x=variable_categorica,
+            y=variable_numerica
+        )
+
+        st.plotly_chart(fig3)
 
         with tabs[3]:
-            if len(num_cols)>=2:
-                corr = df[num_cols].corr()
-                fig, ax = plt.subplots(figsize=(8,5))
-                sns.heatmap(corr, annot=True, cmap="coolwarm", ax=ax)
-                st.pyplot(fig)
+                if len(lista_columna_numerica) > 1:
 
-        with tabs[4]: st.success("Generar conclusiones según los gráficos observados.")
+        corr = data[
+            lista_columna_numerica
+        ].corr()
+
+        fig4, ax = plt.subplots(
+            figsize=(8,5)
+        )
+
+        sns.heatmap(
+            corr,
+            annot=True,
+            cmap="coolwarm",
+            ax=ax
+        )
+
+        st.pyplot(fig4)
+
+        with tabs[4]: 
+                st.subheader("Hallazgos")
+
+    st.write(
+        f"La variable seleccionada es {variable_numerica}."
+    )
+
+    st.write(
+        "Se recomienda revisar la distribución y posibles valores atípicos."
+    )
+
+    st.write(
+        "El mapa de calor permite identificar relaciones entre variables numéricas."
+    )
     
