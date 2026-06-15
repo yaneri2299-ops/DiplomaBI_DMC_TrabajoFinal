@@ -78,21 +78,30 @@ elif menu=="Procesamiento":
         st.metric("Duplicados", int(df.duplicated().sum()))
 
 elif menu=="Análisis Visual":
+
     if st.session_state.df is None:
+
         st.warning("Cargue un dataset primero")
+
     else:
+
         df = st.session_state.df.copy()
 
-        num_cols = df.select_dtypes(include="number").columns.tolist()
-        cat_cols = df.select_dtypes(include="object").columns.tolist()
+        num_cols = df.select_dtypes(
+            include="number"
+        ).columns.tolist()
 
-      tabs = st.tabs([
-    "Resumen",
-    "Distribución",
-    "Comparación",
-    "Correlación",
-    "Conclusiones"
-])
+        cat_cols = df.select_dtypes(
+            include="object"
+        ).columns.tolist()
+
+        tabs = st.tabs([
+            "Resumen",
+            "Distribución",
+            "Comparación",
+            "Correlación",
+            "Conclusiones"
+        ])
 
 # TAB 1
 with tabs[0]:
