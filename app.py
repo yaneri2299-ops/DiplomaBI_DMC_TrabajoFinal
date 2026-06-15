@@ -122,12 +122,9 @@ elif menu=="Análisis Visual":
                 st.pyplot(fig)
 
         with tabs[4]:
-            st.subheader("Insights del Dataset")
-        
-            st.write("Cantidad de registros:", data.shape[0])
-        
-            st.write("Cantidad de variables:", data.shape[1])
-        
-            st.write("Valores nulos:", data.isnull().sum().sum())
+           st.write("Cantidad de registros:", df.shape[0])
 
+            st.write("Cantidad de variables:", df.shape[1])
+
+            st.write("Valores nulos:", df.isnull().sum().sum())
     
