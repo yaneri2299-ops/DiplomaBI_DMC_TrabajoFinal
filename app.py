@@ -1,28 +1,15 @@
 
 import streamlit as st
 import pandas as pd
-import numpy as np
 import plotly.express as px
 import matplotlib.pyplot as plt
 import seaborn as sns
 
 st.set_page_config(page_title="App Analizadora de Datasets", layout="wide")
 
-@st.cache_data
 def load_data(file):
     return pd.read_csv(file)
 
-def detect_dates(df):
-    date_cols = []
-    for c in df.columns:
-        try:
-            conv = pd.to_datetime(df[c], errors="coerce")
-            if conv.notna().sum() > len(df)*0.5:
-                df[c] = conv
-                date_cols.append(c)
-        except:
-            pass
-    return df, date_cols
 
 st.title("📊 App Analizadora de Datasets con Streamlit")
 
@@ -73,13 +60,11 @@ elif menu=="Procesamiento":
         df = st.session_state.df.copy()
         df.columns = [c.strip().replace(" ","_") for c in df.columns]
 
-        df, date_cols = detect_dates(df)
 
-        num_cols = df.select_dtypes(include=np.number).columns.tolist()
+        num_cols = df.select_dtypes(include="number").columns.tolist()
         cat_cols = df.select_dtypes(include="object").columns.tolist()
 
         st.subheader("Clasificación de variables")
-        st.write("Numéricas:", num_cols)
         st.write("Categóricas:", cat_cols)
         st.write("Fechas:", date_cols)
 
@@ -98,12 +83,17 @@ elif menu=="Análisis Visual":
         st.warning("Cargue un dataset primero")
     else:
         df = st.session_state.df.copy()
-        df, date_cols = detect_dates(df)
 
-        num_cols = df.select_dtypes(include=np.number).columns.tolist()
+        num_cols = df.select_dtypes(include="number").columns.tolist()
         cat_cols = df.select_dtypes(include="object").columns.tolist()
 
-        tabs = st.tabs(["Resumen","Univariado","Bivariado","Multivariado","Temporal","Insights"])
+        tabs = st.tabs([
+    "Resumen",
+    "Univariado",
+    "Bivariado",
+    "Multivariado",
+    "Insights"
+])
 
         with tabs[0]:
             st.dataframe(df.describe(include="all"))
@@ -133,12 +123,4 @@ elif menu=="Análisis Visual":
                 st.pyplot(fig)
 
         with tabs[4]:
-            if date_cols and num_cols:
-                d = st.selectbox("Fecha", date_cols)
-                n = st.selectbox("Métrica", num_cols)
-                temp = df.groupby(d)[n].mean().reset_index()
-                fig = px.line(temp,x=d,y=n)
-                st.plotly_chart(fig,use_container_width=True)
-
-        with tabs[5]:
             st.success("Generar conclusiones según los gráficos observados.")
