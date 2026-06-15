@@ -122,4 +122,32 @@ elif menu=="Análisis Visual":
                 st.pyplot(fig)
 
         with tabs[4]:
-            st.success("Generar conclusiones según los gráficos observados.")
+
+    st.subheader("Insights del Dataset")
+
+    st.write("Cantidad de registros:", data.shape[0])
+
+    st.write("Cantidad de variables:", data.shape[1])
+
+    st.write("Valores nulos:", data.isnull().sum().sum())
+
+    if len(lista_numericas) > 0:
+
+        st.write(
+            f"Promedio de {variable_numerica}:",
+            round(data[variable_numerica].mean(),2)
+        )
+
+        st.write(
+            f"Valor máximo de {variable_numerica}:",
+            data[variable_numerica].max()
+        )
+
+        st.write(
+            f"Valor mínimo de {variable_numerica}:",
+            data[variable_numerica].min()
+        )
+
+    st.info(
+        "Los gráficos permiten identificar distribuciones, posibles valores atípicos y relaciones entre variables."
+    )
