@@ -86,7 +86,7 @@ elif menu=="Análisis Visual":
         num_cols = df.select_dtypes(include="number").columns.tolist()
         cat_cols = df.select_dtypes(include="object").columns.tolist()
 
-        tabs = st.tabs([
+      tabs = st.tabs([
     "Resumen",
     "Distribución",
     "Comparación",
@@ -94,46 +94,83 @@ elif menu=="Análisis Visual":
     "Conclusiones"
 ])
 
-        with tabs[0]:
-            st.dataframe(df.describe(include="all"))
+# TAB 1
+with tabs[0]:
 
-        with tab1:
+    st.subheader("Resumen estadístico")
+
+    st.dataframe(
+        df.describe(include="all")
+    )
+
+# TAB 2
+with tabs[1]:
+
+    if len(num_cols) > 0:
+
+        variable_numerica = st.selectbox(
+            "Seleccione una variable numérica",
+            num_cols
+        )
+
         st.subheader("Histograma")
 
         fig = px.histogram(
-            data,
-            x=variable_numerica,
-            title=f"Distribución de {variable_numerica}"
-            )
+            df,
+            x=variable_numerica
+        )
 
-    st.plotly_chart(fig)
+        st.plotly_chart(
+            fig,
+            use_container_width=True
+        )
 
         st.subheader("Boxplot")
 
-    fig2 = px.box(
-        data,
-        y=variable_numerica
-    )
+        fig2 = px.box(
+            df,
+            y=variable_numerica
+        )
 
-    st.plotly_chart(fig2)
+        st.plotly_chart(
+            fig2,
+            use_container_width=True
+        )
 
-        with tabs[2]:
-               if len(lista_columna_categorica) > 0:
+# TAB 3
+with tabs[2]:
+
+    if len(num_cols) > 0 and len(cat_cols) > 0:
+
+        variable_numerica = st.selectbox(
+            "Variable numérica",
+            num_cols,
+            key="num"
+        )
+
+        variable_categorica = st.selectbox(
+            "Variable categórica",
+            cat_cols,
+            key="cat"
+        )
 
         fig3 = px.box(
-            data,
+            df,
             x=variable_categorica,
             y=variable_numerica
         )
 
-        st.plotly_chart(fig3)
+        st.plotly_chart(
+            fig3,
+            use_container_width=True
+        )
 
-        with tabs[3]:
-                if len(lista_columna_numerica) > 1:
+# TAB 4
+with tabs[3]:
 
-        corr = data[
-            lista_columna_numerica
-        ].corr()
+    if len(num_cols) > 1:
+
+        corr = df[num_cols].corr()
 
         fig4, ax = plt.subplots(
             figsize=(8,5)
@@ -148,18 +185,24 @@ elif menu=="Análisis Visual":
 
         st.pyplot(fig4)
 
-        with tabs[4]: 
-                st.subheader("Hallazgos")
+# TAB 5
+with tabs[4]:
+
+    st.subheader("Hallazgos")
 
     st.write(
-        f"La variable seleccionada es {variable_numerica}."
+        f"Cantidad de registros: {df.shape[0]}"
     )
 
     st.write(
-        "Se recomienda revisar la distribución y posibles valores atípicos."
+        f"Cantidad de columnas: {df.shape[1]}"
     )
 
     st.write(
-        "El mapa de calor permite identificar relaciones entre variables numéricas."
+        f"Valores nulos encontrados: {int(df.isna().sum().sum())}"
+    )
+
+    st.success(
+        "Revise los gráficos para identificar distribuciones, valores atípicos y relaciones entre variables."
     )
     
