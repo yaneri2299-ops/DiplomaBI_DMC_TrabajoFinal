@@ -66,7 +66,6 @@ elif menu=="Procesamiento":
 
         st.subheader("Clasificación de variables")
         st.write("Categóricas:", cat_cols)
-        st.write("Fechas:", date_cols)
 
         st.subheader("Valores faltantes")
         nulls = pd.DataFrame({
